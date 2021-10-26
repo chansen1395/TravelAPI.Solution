@@ -35,7 +35,7 @@ namespace TravelAPI.Controllers
       {
         query = query.Where(entry => entry.City == city);
       } 
-      if (rating != null)
+      if (rating > 0)
       {
         query = query.Where(entry => entry.Rating == rating);
       } 
@@ -100,6 +100,36 @@ namespace TravelAPI.Controllers
       return NoContent();
     }
 
+    // PATCH: api/Destinations/5
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> Patch(int id, Destination Destination)
+    {
+      if (id != Destination.DestinationId)
+      {
+        return BadRequest();
+      }
+
+      _db.Entry(Destination).State = EntityState.Modified;
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!DestinationExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return NoContent();
+    }
+
     // DELETE: api/Destinations/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteDestination(int id)
@@ -115,6 +145,23 @@ namespace TravelAPI.Controllers
 
       return NoContent();
     }
+
+//     // DestinationController.cs
+//     [HttpPatch("{id:int}")]
+//     public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Destination> patchEntity)
+//     {
+//     var entity = Destinations.FirstOrDefault(destination => destination.Id == id);
+ 
+//     if (entity == null)
+//     {
+//         return NotFound();
+//     }
+ 
+//     patchEntity.ApplyTo(entity, ModelState); // Must have Microsoft.AspNetCore.Mvc.NewtonsoftJson installed
+    
+//     return Ok(entity);
+// }
+
 
     private bool DestinationExists(int id)
     {
