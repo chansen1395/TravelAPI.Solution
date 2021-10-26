@@ -7,8 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using TravelAPI.Models;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Reflection;
-using System.IO;
+
 
 namespace TravelAPI
 {
@@ -25,14 +24,13 @@ namespace TravelAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Try to appease the computer with adding mvc core
+            services.AddMvcCore();
+            services.AddMvc();
 
             services.AddDbContext<TravelAPIContext>(opt =>
                 opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddControllers();
-
-            // // Trying to set up PATCH reqs
-            // services.AddControllersWithViews()
-            // .AddNewtonsoftJson();
             
             // Add CORS
             services.AddCors(options =>
@@ -79,6 +77,8 @@ namespace TravelAPI
 
             // app.UseHttpsRedirection();
 
+
+            // Swagger
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>

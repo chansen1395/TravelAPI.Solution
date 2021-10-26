@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using TravelAPI.Models;
 using System.Linq;
 
+
 namespace TravelAPI.Controllers
 {
+
   [Route("api/[controller]")]
   [ApiController]
   public class DestinationsController : ControllerBase
