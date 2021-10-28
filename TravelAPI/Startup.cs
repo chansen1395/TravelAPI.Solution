@@ -38,8 +38,10 @@ namespace TravelAPI
             options.AddPolicy(name: MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://example.com",
-                                        "http://www.contoso.com");
+                    builder.WithOrigins("http://localhost:8080",
+                                        "http://localhost:8081",
+                                        "http://localhost:5003",
+                                        "http://localhost:5004");
                 });
             });
 
@@ -88,6 +90,8 @@ namespace TravelAPI
             });
 
             app.UseRouting();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseAuthorization();
 
